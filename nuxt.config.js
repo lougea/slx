@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import articles from "./data/articles.js";
+const articles = require("./data/articles.js");
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
