@@ -31,9 +31,11 @@ export default defineNuxtConfig({
     },
   },
   generate: {
-    routes: () => {
-      return articles.map((article) => `/blog/${article.slug}`);
-    },
+    routes: [
+      "/blog/2025-01-bref",
+      // "/blog/2025-02-article2",
+      // "/blog/2025-03-article3",
+    ],
   },
   compatibilityDate: "2025-02-26",
 });
