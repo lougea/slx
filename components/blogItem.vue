@@ -10,7 +10,7 @@
       </h3>
       <div class="flex mb-2 -mt-2 align-middle">
         <div class="flex prose prose-slate items-center gap-1 flex-wrap">
-          <TagIcon class="w-4 h-4" />
+          <!-- <TagIcon class="w-4 h-4" /> -->
           <template v-for="tag in tags" :key="tag">
             <span>{{ tag }}</span>
           </template>
