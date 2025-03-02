@@ -50,16 +50,15 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import TagIcon from "@/assets/icons/tag.svg?component";
+<script setup>
+// import TagIcon from "@/assets/icons/tag.svg?component";
 
 defineProps(["title", "image", "description", "date", "slug", "tags"]);
 
 const formatDate = (date) => {
-  console.log(date);
-  const options = { year: "numeric", month: "long" };
-  return new Date(date).toLocaleDateString("en", options);
+  return new Date(date).toLocaleDateString("en", {
+    year: "numeric",
+    month: "long",
+  });
 };
 </script>
-
-<style></style>

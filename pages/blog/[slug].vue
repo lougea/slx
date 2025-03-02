@@ -1,59 +1,131 @@
 <template>
-  <div class="px-4 mx-auto sm:px-6 xl:max-w-7xl xl:px-0 mt-10">
-    <!-- Image de l'article -->
-    <img
-      class="mx-auto w-full my-10 rounded-md drop-shadow-sm h-64 object-cover"
-      :src="article?.image"
-      alt="Image de l'article"
-    />
-
-    <!-- Conteneur principal -->
-    <div class="flex flex-col lg:flex-row gap-8">
-      <!-- Contenu de l'article (à gauche) -->
+  <div class="px-1 mx-auto sm:px-6 lg:px-10 xl:max-w-7xl mt-6 sm:mt-10">
+    <div class="flex flex-col lg:flex-row gap-8 lg:gap-20">
+      <!-- Colonne de gauche (contenu principal) -->
       <div class="flex-1">
-        <!-- Titre et date -->
-        <h1 class="text-4xl text-gray-700 font-extrabold mb-6">
+        <!-- Image de l'article -->
+        <img
+          class="mx-auto w-full mb-10 rounded-md drop-shadow-sm h-64 object-cover"
+          :src="article?.image"
+          alt="Image de l'article"
+        />
+
+        <!-- Titre et date de publication -->
+        <h1
+          class="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-4 sm:mb-6"
+        >
           {{ article?.title }}
         </h1>
-        <p class="text-gray-500 mb-10">
+
+        <p class="text-gray-500 text-sm sm:text-base">
           Publié le {{ formatDate(article?.date) }}
         </p>
 
         <!-- Introduction -->
-        <ProseCard class="mb-10">
-          <p class="text-lg text-gray-700 leading-relaxed prose prose-sm">
+        <div class="mb-6 sm:mb-10">
+          <p
+            class="text-gray-700 leading-relaxed prose prose-sm sm:prose-xl whitespace-pre-line"
+          >
             {{ article?.intro }}
           </p>
-        </ProseCard>
-
-        <!-- Contenu principal -->
-        <div class="prose max-w-none">
-          <h2 class="text-2xl font-bold text-gray-800 mb-4">Introduction</h2>
-          <p class="text-gray-700 mb-6">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
-          <h2 class="text-2xl font-bold text-gray-800 mb-4">Section 1</h2>
-          <p class="text-gray-700 mb-6">
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat.
-          </p>
-          <h2 class="text-2xl font-bold text-gray-800 mb-4">Section 2</h2>
-          <p class="text-gray-700 mb-6">
-            Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur.
-          </p>
         </div>
+
+        <!-- Sections de l'article -->
+        <UCard
+          v-for="section in article?.sections"
+          :key="section.id"
+          :id="section.id"
+          class="mb-6 sm:mb-10"
+        >
+          <!-- Titre de la section -->
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">
+            {{ section.title }}
+          </h2>
+
+          <!-- Texte de la section -->
+          <div
+            class="text-gray-700 leading-relaxed prose prose-sm sm:prose-xl whitespace-pre-line"
+          >
+            <template
+              v-for="(part, index) in splitTextWithImages(
+                section.text,
+                section.images
+              )"
+              :key="index"
+            >
+              <template v-if="part.type === 'text'">
+                {{ part.content }}
+              </template>
+
+              <template v-else-if="part.type === 'image'">
+                <div class="float-left mr-4 w-1/2 not-prose my-6">
+                  <img
+                    :src="part.content"
+                    :alt="`Image ${index + 1} pour ${section.title}`"
+                    class="w-full h-auto rounded-lg shadow-md"
+                  />
+                  <figcaption
+                    v-if="part.label"
+                    class="text-sm text-gray-600 text-center mt-1"
+                  >
+                    {{ part.label }}
+                  </figcaption>
+                </div>
+              </template>
+            </template>
+          </div>
+
+          <!-- Solution proposée -->
+          <div v-if="section.solution" class="mt-4 p-4 bg-green-50 rounded-lg">
+            <p class="text-gray-700 leading-relaxed prose prose-sm sm:prose-xl">
+              {{ section.solution }}
+            </p>
+          </div>
+
+          <!-- Question au Maire -->
+          <div v-if="section.question" class="mt-4 p-4 bg-gray-100 rounded-lg">
+            <!-- <p class="text-gray-700 font-semibold">Question au Maire :</p> -->
+            <p class="text-gray-700 leading-relaxed prose prose-sm sm:prose-xl">
+              {{ section.question }}
+            </p>
+          </div>
+        </UCard>
       </div>
 
-      <!-- Sommaire collant (à droite) -->
+      <!-- Colonne de droite (sidebar) -->
       <div class="w-full lg:w-80 flex-shrink-0">
-        <div class="sticky top-20">
-          <UCard class="p-4">
-            <UVerticalNavigation :links="article?.summary" />
+        <div class="sticky top-6 sm:top-20 space-y-4 sm:space-y-6">
+          <!-- À propos de l'auteur -->
+          <UCard :ui="{ body: { padding: 'p-3 sm:p-4' } }">
+            <UVerticalNavigation
+              :links="article?.summary"
+              :ui="{ size: 'text-base sm:text-lg' }"
+            />
+          </UCard>
+
+          <!-- Articles populaires -->
+          <UCard class="p-3 sm:p-4">
+            <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4">
+              Découvrez-aussi
+            </h3>
+
+            <div
+              v-for="article in otherArticles"
+              class="fakeimg mb-3 sm:mb-4"
+              style="height: 80px; background-color: #e2e8f0"
+            >
+              {{ article }}
+            </div>
           </UCard>
         </div>
       </div>
+    </div>
+
+    <!-- Footer -->
+    <div
+      class="footer text-center mt-6 sm:mt-10 py-4 sm:py-6 border-t border-gray-200"
+    >
+      <h2 class="text-gray-700 text-sm sm:text-base">Footer</h2>
     </div>
   </div>
 </template>
@@ -68,14 +140,23 @@ const route = useRoute();
 // Trouver l'article correspondant au slug
 const article = articles.find((article) => article.slug === route.params.slug);
 
+const otherArticles = articles.find(
+  (article) => article.slug !== route.params.slug
+);
+
+console.log(article);
+
 if (!article) {
   throw createError({ statusCode: 404, statusMessage: "Article not found" });
 }
 
 // Formater la date
 const formatDate = (date) => {
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  return new Date(date).toLocaleDateString("fr", options);
+  return new Date(date).toLocaleDateString("fr", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 };
 
 // SEO
@@ -89,4 +170,37 @@ useSeoMeta({
     },
   ],
 });
+
+const splitTextWithImages = (text, images) => {
+  console.log(images);
+  const parts = [];
+  let currentText = text;
+  let imageIndex = 0;
+
+  while (currentText.includes("[IMAGE")) {
+    const imageMarker = `[IMAGE${imageIndex + 1}]`;
+    const markerIndex = currentText.indexOf(imageMarker);
+
+    if (markerIndex !== -1) {
+      // Ajouter le texte avant l'image
+      parts.push({ type: "text", content: currentText.slice(0, markerIndex) });
+      // Ajouter l'image
+      parts.push({
+        type: "image",
+        content: images[imageIndex].src,
+        label: images[imageIndex]?.label,
+      });
+      // Mettre à jour le texte restant
+      currentText = currentText.slice(markerIndex + imageMarker.length);
+      imageIndex++;
+    }
+  }
+
+  // Ajouter le texte restant
+  if (currentText) {
+    parts.push({ type: "text", content: currentText });
+  }
+
+  return parts;
+};
 </script>
