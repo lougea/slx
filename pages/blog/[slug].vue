@@ -117,22 +117,16 @@
 </template>
 
 <script setup>
-// import siteMetaInfo from "@/data/sitemetainfo";
-// import author from "@/data/author.js";
 import articles from "@/data/articles.js";
 
 const route = useRoute();
 
 // Trouver l'article correspondant au slug
-const article = articles.find((article) => article.slug === route.params.slug);
+const article = articles?.find((article) => article.slug === route.params.slug);
 
 const otherArticles = articles.find(
   (article) => article.slug !== route.params.slug
 );
-
-if (!article) {
-  throw createError({ statusCode: 404, statusMessage: "Article not found" });
-}
 
 // Formater la date
 const formatDate = (date) => {
