@@ -84,7 +84,7 @@ export const articles = [
         id: 3,
         title: "Dossier : circuler à Saulx ? Dégradation de l’espace public",
         text: `
-
+     [IMAGE1]
           Que constatons-nous ?
           ▪ Chemins piétons défoncés dans la descente de l’école Anatole France vers l’Arpajonnais ; absence de trottoirs et de cheminement sécurisé dans le nouveau quartier Lunézy, pas de stationnement visiteurs.
           ▪ PMR oubliés, cheminements vélos interrompus entre les différents quartiers.
@@ -96,7 +96,7 @@ export const articles = [
           ▪ Covoiturage inexistant.
           ▪ Gares autour de Saulx Les Chartreux.
 
-             [IMAGEFULL]
+
         `,
         solution: `
           Nos concitoyens ont besoin de circuler de façon sécurisée et adaptée en fonction des développements des différents quartiers.

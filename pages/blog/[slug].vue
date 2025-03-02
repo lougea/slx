@@ -1,16 +1,13 @@
 <template>
   <div class="px-1 mx-auto sm:px-6 lg:px-10 xl:max-w-7xl mt-6 sm:mt-10">
-    <div class="flex flex-col lg:flex-row gap-8 lg:gap-20">
-      <!-- Colonne de gauche (contenu principal) -->
+    <div v-if="article" class="flex flex-col lg:flex-row gap-8 lg:gap-20">
       <div class="flex-1">
-        <!-- Image de l'article -->
         <img
           class="mx-auto w-full mb-10 rounded-md drop-shadow-sm h-64 object-cover"
           :src="article?.image"
           alt="Image de l'article"
         />
 
-        <!-- Titre et date de publication -->
         <h1
           class="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-4 sm:mb-6"
         >
@@ -21,7 +18,6 @@
           Publié le {{ formatDate(article?.date) }}
         </p>
 
-        <!-- Introduction -->
         <div class="mb-6 sm:mb-10">
           <p
             class="text-gray-700 leading-relaxed prose prose-sm sm:prose-xl whitespace-pre-line"
@@ -30,19 +26,16 @@
           </p>
         </div>
 
-        <!-- Sections de l'article -->
         <UCard
           v-for="section in article?.sections"
           :key="section.id"
           :id="section.id"
           class="mb-6 sm:mb-10"
         >
-          <!-- Titre de la section -->
           <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">
             {{ section.title }}
           </h2>
 
-          <!-- Texte de la section -->
           <div
             class="text-gray-700 leading-relaxed prose prose-sm sm:prose-xl whitespace-pre-line"
           >
@@ -66,7 +59,7 @@
                   />
                   <figcaption
                     v-if="part.label"
-                    class="text-sm text-gray-600 text-center mt-1"
+                    class="text-sm text-gray-600 text-center mt-1 truncate w-32 sm:w-auto"
                   >
                     {{ part.label }}
                   </figcaption>
@@ -75,16 +68,13 @@
             </template>
           </div>
 
-          <!-- Solution proposée -->
           <div v-if="section.solution" class="mt-4 p-4 bg-green-50 rounded-lg">
             <p class="text-gray-700 leading-relaxed prose prose-sm sm:prose-xl">
               {{ section.solution }}
             </p>
           </div>
 
-          <!-- Question au Maire -->
           <div v-if="section.question" class="mt-4 p-4 bg-gray-100 rounded-lg">
-            <!-- <p class="text-gray-700 font-semibold">Question au Maire :</p> -->
             <p class="text-gray-700 leading-relaxed prose prose-sm sm:prose-xl">
               {{ section.question }}
             </p>
@@ -92,10 +82,8 @@
         </UCard>
       </div>
 
-      <!-- Colonne de droite (sidebar) -->
       <div class="w-full lg:w-80 flex-shrink-0">
         <div class="sticky top-6 sm:top-20 space-y-4 sm:space-y-6">
-          <!-- À propos de l'auteur -->
           <UCard :ui="{ body: { padding: 'p-3 sm:p-4' } }">
             <UVerticalNavigation
               :links="article?.summary"
@@ -103,7 +91,6 @@
             />
           </UCard>
 
-          <!-- Articles populaires -->
           <UCard class="p-3 sm:p-4">
             <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4">
               Découvrez-aussi
@@ -121,7 +108,6 @@
       </div>
     </div>
 
-    <!-- Footer -->
     <div
       class="footer text-center mt-6 sm:mt-10 py-4 sm:py-6 border-t border-gray-200"
     >
@@ -131,8 +117,8 @@
 </template>
 
 <script setup>
-import siteMetaInfo from "@/data/sitemetainfo";
-import author from "@/data/author.js";
+// import siteMetaInfo from "@/data/sitemetainfo";
+// import author from "@/data/author.js";
 import articles from "@/data/articles.js";
 
 const route = useRoute();
@@ -143,8 +129,6 @@ const article = articles.find((article) => article.slug === route.params.slug);
 const otherArticles = articles.find(
   (article) => article.slug !== route.params.slug
 );
-
-console.log(article);
 
 if (!article) {
   throw createError({ statusCode: 404, statusMessage: "Article not found" });
@@ -172,7 +156,6 @@ useSeoMeta({
 });
 
 const splitTextWithImages = (text, images) => {
-  console.log(images);
   const parts = [];
   let currentText = text;
   let imageIndex = 0;
