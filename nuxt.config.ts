@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import articles from "./data/articles.js";
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxt/content", "nuxt-svgo", "@nuxt/image", "@nuxt/ui"],
@@ -26,6 +28,11 @@ export default defineNuxtConfig({
         "java",
         "javascript",
       ],
+    },
+  },
+  generate: {
+    routes: () => {
+      return articles.map((article) => `/blog/${article.slug}`);
     },
   },
   compatibilityDate: "2025-02-26",

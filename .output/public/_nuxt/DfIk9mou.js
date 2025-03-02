@@ -1,1 +1,0 @@
-const e={title:"Saulx-idaire",description:"Une équipe citoyenne au service de notre village",slogan:"Solidaire pour un avenir claire",language:"fr-FR",theme:"system",siteUrl:"https://rathik.dev",siteRepo:"#",siteLogo:"../assets/author.png",image:"~/assets/author.png",socialBanner:"/static/images/twitter-card.png"};export{e as s};

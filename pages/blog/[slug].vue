@@ -120,13 +120,18 @@
 import articles from "@/data/articles.js";
 
 const route = useRoute();
+slug;
 
 // Trouver l'article correspondant au slug
-const article = articles?.find((article) => article.slug === route.params.slug);
+const article = articles.find((article) => article.slug === route.params.slug);
 
 const otherArticles = articles.find(
   (article) => article.slug !== route.params.slug
 );
+
+if (!article) {
+  throw createError({ statusCode: 404, statusMessage: "Article not found" });
+}
 
 // Formater la date
 const formatDate = (date) => {
